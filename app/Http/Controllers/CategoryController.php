@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryCollection;
 use App\Models\Category;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -14,15 +15,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-        $categories = Category::all();
-        return response(
-            [
-                'data'=> $categories,
-
-            ],
-            200
-        );
+             
+       $categories = Category::with('articles')->get();       
+       return new CategoryCollection(Category::all());
+       // return response(
+        //     [
+        //         'data'=> $categories,
+        //     ],
+        //     200
+        // );
     }
 
     /**
@@ -52,6 +53,8 @@ class CategoryController extends Controller
             'added_by' => Auth::user()->id,
             'updated_by'=>Auth::user()->id,
         ]);
+
+
 
         return response(
             [

@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\UserRegistered;
 
 use App\Events\RegisteredUser;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -119,6 +121,15 @@ public function register(Request $request)
         return response([
             "message"=>$message
         ], $code);
+    }
+
+    public function getUsersAllData()
+    {
+        $data = User::with(["articles",  "articles.categories"])->get();        
+        return UserResource::collection(User::all() );
+        // return response([
+        //     "data"=> $data,            
+        // ]);
     }
 
 
