@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->string('article_title');
-            $table->string('article_sub_title');
-            $table->text('detail');
+            $table->string('article_title')->nullable(true);
+            $table->string('article_sub_title')->nullable(true);
+            $table->text('detail')->nullable(true);
             $table->tinyInteger('status')->default(0);
             $table->integer('added_by');
             $table->integer('updated_by');            

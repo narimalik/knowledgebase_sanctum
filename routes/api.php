@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::resource('categories', CategoryController::class)->middleware('auth:sanctum');
+
+Route::resource('articles', ArticleController::class)->middleware('auth:sanctum');
+
+Route::post("getUsersalldata", [UserController::class, "getUsersAllData"])->middleware('auth:sanctum');
+

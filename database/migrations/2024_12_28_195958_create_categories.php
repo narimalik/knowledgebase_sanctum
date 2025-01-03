@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_name')->nullable(false);
+            $table->string('category_name')->nullable(false);
             $table->integer('added_by');
             $table->integer('updated_by');
-            $table->tinyInteger('status')->status(0);
+            $table->tinyInteger('status')->default(0);
 
            # $table->datetime('created_at');
            # $table->datetime('updated_at');
