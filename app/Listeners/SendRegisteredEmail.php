@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Log;
 class SendRegisteredEmail implements ShouldQueue
 {
     public $tries = 5;  //It will throw exception after this many time.
+
+    #public $queue = 'usertasks';  // If you want to specify a seperate queue.
+
     /**
      * Create the event listener.
      */
