@@ -14,6 +14,7 @@ use App\Mail\UserRegistered;
 use App\Events\RegisteredUser;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
+use App\Jobs\SendRegisteredEmailjob;
 
 class UserController extends Controller
 {
@@ -82,8 +83,8 @@ public function register(Request $request)
 
         $token = $user->createToken($request->email)->plainTextToken;
 
-         ## Send Welcom email
-         RegisteredUser::dispatch($user);
+         ## Create job to Send Welcom email         
+         SendRegisteredEmailjob::dispatch($user);
          
 
         
@@ -125,8 +126,9 @@ public function register(Request $request)
 
     public function getUsersAllData()
     {
-        $data = User::with(["articles",  "articles.categories"])->get();        
-        return UserResource::collection(User::all() );
+        $data = User::with(["articles",  "articles.categories"])->get();
+       // $data = User::find(25);  
+        return UserResource::collection($data );
         // return response([
         //     "data"=> $data,            
         // ]);

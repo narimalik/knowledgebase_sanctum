@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +15,11 @@ class ArticleController extends Controller
     public function index()
     {
 
-        $articles = Article::with('categories')->get();
-        return response([
-            "data" => $articles,
-        ], 200);
+        $articles = Article::with('categories')->paginate(1);
+        return ArticleResource::collection($articles);
+        // return response([
+        //     "data" => $articles,
+        // ], 200);
     }
 
     /**
@@ -43,7 +45,7 @@ class ArticleController extends Controller
             'article_sub_title'=>$request->article_sub_title,
             'detail'=>$request->detail,
             'status'=>$request->status,
-            'added_by' => Auth::user()->id,
+            'added_by' =>Auth::user()->id,
             'updated_by'=>Auth::user()->id,
         ]);
 

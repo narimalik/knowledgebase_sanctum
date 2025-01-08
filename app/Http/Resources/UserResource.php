@@ -18,7 +18,8 @@ class UserResource extends JsonResource
         return [
             'name'=>$this->name,
             'date'=>$this->created_at,
-            'articles'=> ArticleResource::collection($this->articles) ,
+            "articles"=> $this->articles,
+           // 'articles'=> ArticleResource::collection($this->articles) ,
             //'articles'=> $this->articles ,
         ];
     }

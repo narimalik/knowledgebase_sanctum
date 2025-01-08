@@ -17,7 +17,10 @@ class ArticleResource extends JsonResource
         return [
             "article_title"=>$this->article_title,
             "article_sub_title"=>$this->article_sub_title,
+            // "detail"=> $this->whenNotNull($this->detail),  # Only return value if its not null
+            "detail"=> $this->whenNotNull($this->detail),
             "categories"=> $this->categories,
+            $this->wh
         ];
     }
 }
