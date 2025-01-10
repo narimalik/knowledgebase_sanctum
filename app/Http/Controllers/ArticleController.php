@@ -12,14 +12,19 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, Article $article)
     {
+        if($request->user()->cant('viewAny',$article)){ 
+            return response([
+                "message"=>""
+            ],403);
+        }
+
+       // $this->authorize('viewAny',Article::class);
 
         $articles = Article::with('categories')->paginate(1);
         return ArticleResource::collection($articles);
-        // return response([
-        //     "data" => $articles,
-        // ], 200);
+        
     }
 
     /**

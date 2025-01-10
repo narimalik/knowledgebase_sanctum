@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,4 +31,18 @@ Route:: get( 'mailable', function(){
     $user = App\Models\User::find(1);
     return new App\Mail\UserRegistered($user);
 } );
+
+Route::get( 'test', function(){
+    //$users=null;
+    $users =  Cache::remember('all-users', 100, function(){
+       return App\Models\User::all();
+    });
+    
+
+    foreach($users as $user)    
+    {
+        echo PHP_EOL."<br/>user email : ". $user->email;
+        
+    }
+});
 

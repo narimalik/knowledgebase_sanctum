@@ -16,9 +16,12 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Jobs\SendRegisteredEmailjob;
 
+use App\Traits\Utilities;
+
 class UserController extends Controller
 {
     //
+    use Utilities;
 
     public function login(Request $request){
         
@@ -39,8 +42,10 @@ class UserController extends Controller
            $user->tokens()->delete();
 
            $request->session()->regenerate();
+           
+           $global_abilities = $this->getTokenGlobalAbilities();
 
-            $token = $user->createToken( $request->input('email'), ['*'] )->plainTextToken;
+            $token = $user->createToken( $request->input('email'), $global_abilities)->plainTextToken;
 
             # $token = $user->createToken( $request->input('email'), ['*'], now()->addMinute() )->plainTextToken;
         
@@ -64,6 +69,7 @@ class UserController extends Controller
 
 public function register(Request $request)
     {
+
         
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -124,8 +130,15 @@ public function register(Request $request)
         ], $code);
     }
 
-    public function getUsersAllData()
+    public function getUsersAllData(Request $request)
     {
+        // if( !$request->user()->tokenCan('article:can-view') ){
+        //     return response([
+                
+        //     ],
+        // 403);
+        // }
+
         $data = User::with(["articles",  "articles.categories"])->get();
        // $data = User::find(25);  
         return UserResource::collection($data );
