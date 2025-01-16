@@ -20,7 +20,7 @@ class Article extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, "article_category","category","article");
+        return $this->belongsToMany(Category::class, "article_category","category","article")->withTimestamps();
     }
 
 }

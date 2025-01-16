@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\ArticleEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
 use App\Events\RegisteredUser;
+use App\Listeners\DeleteArticleCategoriesListner;
 use App\Listeners\SendRegisteredEmail;
 
 class EventServiceProvider extends ServiceProvider
@@ -24,6 +26,10 @@ class EventServiceProvider extends ServiceProvider
 
         RegisteredUser::class => [
             SendRegisteredEmail::class,
+        ],
+
+        ArticleEvent::class =>[
+            DeleteArticleCategoriesListner::class
         ],
 
     ];

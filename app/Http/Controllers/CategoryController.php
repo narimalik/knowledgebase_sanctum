@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
+use DB;
+
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CategoryController extends Controller
 {
@@ -17,7 +22,7 @@ class CategoryController extends Controller
     {
              
        $categories = Category::with('articles')->get();       
-       return new CategoryCollection(Category::all());
+       return new CategoryResource($categories);
        // return response(
         //     [
         //         'data'=> $categories,
@@ -40,28 +45,33 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //echo "I am in CategoryController:store() Take posted data and save in DB"; exit;
+        DB::beginTransaction();
+        try{
+            $validate = $request->validate([
+                "category_name" => ['required', 'min:5', 'max:100'],
 
-        $validate = $request->validate([
-            "category_name" => ['required'],
+            ]);
+            Category::create([
+                'category_name' => $request->category_name,
+                'added_by' => Auth::user()->id,
+                'updated_by'=>Auth::user()->id,
+            ]);
+            DB::commit();
+            return response(
+                [
+                    'message'=>'Category Has been created',
+                ]
+            , 200);
 
-        ]);
-
-        Category::create([
-            'category_name' => $request->category_name,
-            'added_by' => Auth::user()->id,
-            'updated_by'=>Auth::user()->id,
-        ]);
-
-
-
-        return response(
-            [
-                'message'=>'Category Has been created',
-            ]
-        , 200);
-        
+        }catch(Throwable $exception){
+            DB::rollback();            
+            return response([
+                "message"=> $exception->getMessage(),
+                ],
+                500
+            );
+        }
+            
 
     }
 
@@ -88,8 +98,34 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-        echo "I am in CategoryController:update()"; exit;
+        DB::beginTransaction();
+        try{
+                $validate = $request->validate([
+                    "category_name" => ['required', 'min:5', 'max:100'],
+
+                ]);
+                //        echo "I am in CategoryController:update()"; exit;
+                $cateogry = Category::find($id);
+                $cateogry->category_name = $request->category_name;
+                $cateogry->updated_by=Auth::user()->id;
+                $cateogry->save();
+                DB::commit();
+                return response(
+                    [
+                        'message'=>'Category Has been updated',
+                    ]
+                , 200);
+
+            }catch(Throwable $exception){
+                DB::rollback();            
+                return response([
+                    "message"=> $exception->getMessage(),
+                    ],
+                    500
+                );
+            }
+
+
     }
 
     /**
@@ -98,6 +134,29 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         //
-        echo "I am in CategoryController:destroy()"; exit;
+        DB::beginTransaction();
+        try{
+            $category = Category::find($id);
+            $this->authorize("delete", $category);
+            
+            $category->delete();
+            DB::commit();
+            return response([
+                "message"=>"Category Deleted Sucessfully",
+            ],
+            200);
+
+        }
+        //catch( AuthorizationException $e ){ echo $e->getMessage(); }
+        catch(Throwable $exception){
+            DB::rollback();            
+            return response([
+                "message"=> $exception->getMessage(),
+                ],
+                500
+            );
+        }
+        
+
     }
 }

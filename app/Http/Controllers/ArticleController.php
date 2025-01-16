@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ArticleEvent;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
+use DB;
 
 class ArticleController extends Controller
 {
@@ -14,13 +18,14 @@ class ArticleController extends Controller
      */
     public function index(Request $request, Article $article)
     {
+       
         if($request->user()->cant('viewAny',$article)){ 
-            return response([
-                "message"=>""
+            return response([                
+                "message"=>"unauthorized"
             ],403);
         }
 
-       // $this->authorize('viewAny',Article::class);
+        //$this->authorize('viewAny',Article::class);
 
         $articles = Article::with('categories')->paginate(1);
         return ArticleResource::collection($articles);
@@ -41,28 +46,44 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         //
+       
         $request->validate([
-            "article_title" => ["required"]
+            "article_title" => ["required","max:100","min:5"],
+            "detail" => ["required","min:5"],
         ]);
 
-        $article = Article::create([
-            'article_title'=>$request->article_title,
-            'article_sub_title'=>$request->article_sub_title,
-            'detail'=>$request->detail,
-            'status'=>$request->status,
-            'added_by' =>Auth::user()->id,
-            'updated_by'=>Auth::user()->id,
-        ]);
+        DB::beginTransaction();
+        try{
+            $this->authorize("create");
+            $article = Article::create([
+                'article_title'=>$request->article_title,
+                'article_sub_title'=>$request->article_sub_title,
+                'detail'=>$request->detail,
+                'status'=>$request->status,
+                'added_by' =>Auth::user()->id,
+                'updated_by'=>Auth::user()->id,
+            ]);
 
-        $categories = $request->categories;
+            $categories = $request->categories;
+            $article->categories()->sync($categories);
+            DB::commit();
+            return response([
+                "message"=> "Article Added sucessfully",
+                ],
+                200
+            );
 
-        $article->categories()->sync($categories);
+        }catch(Throwable $exception){
+            DB::rollback();
+            return response([
+                "message"=> $exception->getMessage(),
+                ],
+                500
+            );
 
-        return response([
-            "message"=> "Article Added sucessfully",
-            ],
-            200
-        );
+        }
+
+       
 
     }
 
@@ -87,7 +108,47 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try{
+
+            $article = Article::find($id);
+
+            $this->authorize('update', $article);
+
+            //
+            
+            $request->validate([
+                "article_title" => ["required","max:100","min:5"],
+                "detail" => ["required"],
+            ]);
+
+            $article->article_title = $request->article_title;
+            $article->article_sub_title = $request->article_sub_title;
+            $article->detail = $request->detail;
+            $article->status = $request->status;
+
+            $article->updated_by=Auth::user()->id;
+            
+            $article->save();
+
+
+            $categories = $request->categories;
+            $article->categories()->sync($categories);
+            DB::commit();
+            return response([
+                "message"=> "Article Updated sucessfully",
+                ],
+                200
+            );
+
+        }catch(Throwable $exception){
+            DB::rollback();
+            return response([
+                "message"=> $exception->getMessage(),
+                ],
+                500
+            );
+        }
     }
 
     /**
@@ -95,6 +156,42 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+        DB::beginTransaction();
+        
+        try{
+            $article = Article::find($id);  
+            
+            $this->authorize("delete", $article);
+
+            $article = Article::with("categories")->get()->find($id);
+            
+            $article->delete();
+            
+            ArticleEvent::dispatch($article); // Event
+            DB::commit();
+            return response([
+                "message"=> "Article Deleted sucessfully",
+                ],
+                200
+            );
+        }        
+        catch(Throwable $exception){
+            DB::rollback();
+            echo get_class($exception); exit;
+            $exception->getMessage();
+            return response([
+                "message"=> $exception->getMessage(),
+                ],
+                500
+            );
+        }
+            
+            
+        
+        
+
+        
+        
     }
 }

@@ -30,7 +30,7 @@ class ArticlePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->tokenCan("article:can-create");
     }
 
     /**
@@ -39,6 +39,7 @@ class ArticlePolicy
     public function update(User $user, Article $article): bool
     {
         //
+        return $user->id===$article->added_by;
     }
 
     /**
@@ -46,7 +47,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): bool
     {
-        //
+        return $user->id===$article->added_by;
     }
 
     /**

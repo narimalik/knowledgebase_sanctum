@@ -20,7 +20,7 @@ class Category extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(Article::class, "article_category", "category", "article");
+        return $this->belongsToMany(Article::class, "article_category", "category", "article")->withTimestamps();
     }
 
 
