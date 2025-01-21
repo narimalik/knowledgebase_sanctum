@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
-        for($i=0; $i<2000; $i++){
+        for($i=0; $i<2; $i++){
             echo $i.PHP_EOL;
             DB::table('users')->insert([
                 'name' => Str::random(10),
