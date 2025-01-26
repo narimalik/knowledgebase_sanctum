@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Article;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ArticlePolicy
+class CommentPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -14,13 +14,13 @@ class ArticlePolicy
     public function viewAny(User $user): bool
     {
         //
-        return $user->tokenCan("article:can-view");
+        return $user->tokenCan("comment:can-view");
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Article $article): bool
+    public function view(User $user, Comment $comment): bool
     {
         //
     }
@@ -29,32 +29,32 @@ class ArticlePolicy
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
-    {
-        
-        return $user->tokenCan("article:can-add");
+    {        
+        return $user->tokenCan("comment:can-add");
+        #return true;
+
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Article $article): bool
+    public function update(User $user, Comment $comment): bool
     {
-        //
-        return $user->id===$article->added_by;
+        return $user->id===$comment->added_by;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Article $article): bool
+    public function delete(User $user, Comment $comment): bool
     {
-        return $user->id===$article->added_by;
+        return $user->id===$comment->added_by;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Article $article): bool
+    public function restore(User $user, Comment $comment): bool
     {
         //
     }
@@ -62,7 +62,7 @@ class ArticlePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Article $article): bool
+    public function forceDelete(User $user, Comment $comment): bool
     {
         //
     }

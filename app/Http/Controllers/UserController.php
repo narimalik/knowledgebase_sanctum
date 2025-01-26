@@ -43,7 +43,7 @@ class UserController extends Controller
 
            $request->session()->regenerate();
            
-           $global_abilities = $this->getTokenGlobalAbilities();
+           $global_abilities = $this->getTokenGlobalAbilities();           
 
             $token = $user->createToken( $request->input('email'), $global_abilities)->plainTextToken;
 

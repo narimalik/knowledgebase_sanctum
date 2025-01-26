@@ -26,8 +26,8 @@ class ArticleController extends Controller
         }
 
         //$this->authorize('viewAny',Article::class);
-
-        $articles = Article::with('categories')->paginate(1);
+        # $articles = Article::with(['categories','comments'])->paginate(10);
+        $articles = Article::paginate(10);
         return ArticleResource::collection($articles);
         
     }
@@ -54,7 +54,11 @@ class ArticleController extends Controller
 
         DB::beginTransaction();
         try{
-            $this->authorize("create");
+            
+            //1st argu: actionName of policy, 
+            //2nd argu: Model class name to determine policy class
+            $this->authorize("create", Article::class); 
+
             $article = Article::create([
                 'article_title'=>$request->article_title,
                 'article_sub_title'=>$request->article_sub_title,
@@ -92,7 +96,12 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //$articles = Article::where("id",$id)->with("categories")->get();
+        $articles = Article::find($id)->get();
+        return ArticleResource::collection($articles);
+        // return response([
+        //     "data"=>$articles
+        // ]);
     }
 
     /**
@@ -178,7 +187,7 @@ class ArticleController extends Controller
         }        
         catch(Throwable $exception){
             DB::rollback();
-            echo get_class($exception); exit;
+            #echo get_class($exception); exit;
             $exception->getMessage();
             return response([
                 "message"=> $exception->getMessage(),

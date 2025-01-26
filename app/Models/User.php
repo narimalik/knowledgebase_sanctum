@@ -48,4 +48,15 @@ class User extends Authenticatable
         return $this->hasMany(Article::class, "added_by","id");
     }
 
+
+    public function comment()
+    {
+        return $this->hasMany(Comment::class, "added_by","id");
+    }
+
+    public function category()
+    {
+        return $this->hasMany(Category::class, "added_by", "id");
+    }
+
 }
