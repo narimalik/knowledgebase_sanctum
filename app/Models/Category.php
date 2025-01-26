@@ -23,6 +23,12 @@ class Category extends Model
         return $this->belongsToMany(Article::class, "article_category", "category", "article")->withTimestamps();
     }
 
+    public function user()
+    {
+        //return $this->belongsTo(User::class, "added_by");
+        return $this->belongsTo(User::class, "added_by");
+    }
+
 
     
 
