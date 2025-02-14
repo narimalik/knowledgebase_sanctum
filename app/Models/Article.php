@@ -28,4 +28,9 @@ class Article extends Model
         return $this->hasMany(Comment::class, "article_id"); // third argument will be id.
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, "added_by");
+    }
+
 }
