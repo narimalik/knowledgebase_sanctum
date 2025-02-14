@@ -17,5 +17,6 @@ class ArticleCollection extends ResourceCollection
         return [
            // "articles"=>$this->collection,
         ];
+        
     }
 }
