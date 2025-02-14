@@ -23,7 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::resource('categories', CategoryController::class)->middleware('auth:sanctum');
 
 Route::resource('articles', ArticleController::class)->middleware('auth:sanctum');
