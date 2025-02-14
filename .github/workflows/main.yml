@@ -5,13 +5,13 @@ on:
       - main
 jobs:
   FTP-deploy-action:
-    name: ftp-deploy-action
+    name: FTP-Deploy-Action
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.1.0
       with:
         fetch-depth: 2
-    - name: ftp-deploy-action
+    - name: FTP-Deploy-Action
       uses: Samkirkland/FTP-Deploy-Action@3.1.1
       with:
         ftp-server: ${{ secrets.FTP_SERVER}}
