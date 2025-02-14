@@ -2,7 +2,7 @@ name: upload files to cpanel
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   FTP-deploy-action:
     name: ftp-deploy-action
