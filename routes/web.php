@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
@@ -44,5 +45,12 @@ Route::get( 'test', function(){
         echo PHP_EOL."<br/>user email : ". $user->email;
         
     }
+});
+
+
+# Routes for Artisan command.
+Route::get("migrate", function(){
+    Artisan::call('migrate');
+    //php artisan migrate
 });
 
