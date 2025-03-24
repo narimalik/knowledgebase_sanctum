@@ -52,5 +52,6 @@ Route::get( 'test', function(){
 Route::get("migrate", function(){
     Artisan::call('migrate');
     //php artisan migrate
+    echo "Command ran successfully";
 });
 

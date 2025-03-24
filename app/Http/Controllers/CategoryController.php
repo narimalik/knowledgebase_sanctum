@@ -15,21 +15,27 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class CategoryController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
              
-       $categories = Category::with('articles')->get();       
-       return new CategoryResource($categories);
-       // return response(
-        //     [
-        //         'data'=> $categories,
-        //     ],
-        //     200
-        // );
-    }
+       $categories = Category::with(['articles','user'])->get();           
+        return  CategoryResource::collection($categories);
+    //    return response(
+    //         [
+    //             'data'=> $categories,
+    //         ],
+    //         200
+    //     );
+
+     }
+
+
+
 
     /**
      * Show the form for creating a new resource.
