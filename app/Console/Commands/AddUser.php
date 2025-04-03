@@ -44,6 +44,7 @@ class AddUser extends Command
 
             try{
                 $user = $userController->register($reqest);
+                $this->info("User Created!");
                 print($user);
             }
             catch(Exception $e){
