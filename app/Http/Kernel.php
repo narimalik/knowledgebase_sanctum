@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // Anwaar: uncomment this for SPA authenticate.
+          //  \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // Anwaar: for SPA authenticate.
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
