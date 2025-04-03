@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => ['https://anwaarfazil.com','http://anwaarfazil.com'],
+    'allowed_origins_patterns' => ['http://localhost','https://anwaarfazil.com','http://anwaarfazil.com'],
 
     'allowed_headers' => ['*'],
 
