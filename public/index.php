@@ -5,8 +5,6 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-echo env('APP_ENV'); exit;
-
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
