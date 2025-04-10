@@ -55,3 +55,11 @@ Route::get("migrate", function(){
     echo "Command ran successfully";
 });
 
+
+Route::get('/check-env', function () {
+    return [
+        'app_env' => env('APP_ENV'),
+        'cache_driver' => env('CACHE_DRIVER'),
+        'session_driver' => env('SESSION_DRIVER'),
+    ];
+});
