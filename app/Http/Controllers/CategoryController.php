@@ -22,6 +22,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        echo env('APP_ENV'); exit;
              
        $categories = Category::with(['articles','user'])->get();           
         return  CategoryResource::collection($categories);
