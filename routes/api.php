@@ -22,9 +22,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-Route::middleware(['auth:sanctum', 'throttle:60,1'])->group( function(Request $request){
-
-print_r($request->header('Authorization'));
+Route::middleware(['auth:sanctum', 'throttle:0,1', 'myauth'])->group( function(){
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
