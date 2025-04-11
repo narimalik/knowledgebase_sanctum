@@ -22,18 +22,18 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-Route::middleware(['auth:sanctum'])->group( function(){
+Route::middleware(['auth:sanctum', 'throttle:10,1'])->group( function(){
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });
     
-    Route::resource('categories', CategoryController::class)->middleware('auth:sanctum');
+    Route::resource('categories', CategoryController::class);
     
-    Route::resource('articles', ArticleController::class)->middleware('auth:sanctum');
+    Route::resource('articles', ArticleController::class);
     
-    Route::resource("comments", CommentController::class)->middleware("auth:sanctum");
+    Route::resource("comments", CommentController::class);
     
-    Route::post("getUsersalldata", [UserController::class, "getUsersAllData"])->middleware('auth:sanctum');
+    Route::post("getUsersalldata", [UserController::class, "getUsersAllData"]);
 
 });
