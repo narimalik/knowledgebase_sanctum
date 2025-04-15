@@ -26,7 +26,7 @@ class ArticleController extends Controller
         }
 
         //$this->authorize('viewAny',Article::class);
-        # $articles = Article::with(['categories','comments'])->paginate(10);
+        ##$articles = Article::with(['categories'])->where('category',1)->paginate(10);
         $articles = Article::paginate(10);
         return ArticleResource::collection($articles);
         
@@ -94,14 +94,13 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
+
     public function show(string $id)
     {
-        //$articles = Article::where("id",$id)->with("categories")->get();
+        
         $articles = Article::find($id)->get();
         return ArticleResource::collection($articles);
-        // return response([
-        //     "data"=>$articles
-        // ]);
+
     }
 
     /**

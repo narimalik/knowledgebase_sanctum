@@ -19,7 +19,13 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['anwaarfazil.com','https://anwaarfazil.com','http://anwaarfazil.com','https://www.anwaarfazil.com'],
+    'allowed_origins' => [
+        'anwaarfazil.com',
+        'https://anwaarfazil.com',
+        'http://anwaarfazil.com',
+        'https://www.anwaarfazil.com',
+        'http://localhost:8080'
+    ],
 
     'allowed_origins_patterns' => [],
 

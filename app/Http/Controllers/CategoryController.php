@@ -86,8 +86,13 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
+        
         //
-        echo "I am in CategoryController:show()"; exit;
+        # echo "I am in CategoryController:show()"; exit;
+
+        $categories = Category::with(['articles'])->where("id",$id)->get();           
+        return  CategoryResource::collection($categories);
+
     }
 
     /**
