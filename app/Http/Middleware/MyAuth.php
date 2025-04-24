@@ -16,6 +16,7 @@ class MyAuth
     public function handle(Request $request, Closure $next): Response
     {
         # print_r( $request->header('Authorization') ); exit;
+        \Log::info('CATEGORIES HIT', request()->all());
 
         return $next($request);
     }

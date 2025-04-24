@@ -2,28 +2,25 @@
 
 namespace App\Jobs;
 
-use App\Events\RegisteredUser;
-use App\Models\User;
+use App\Events\SendContactUsEamilEvent;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SendRegisteredEmailjob implements ShouldQueue
+class ProcessContactUsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $user;
-
+    public $data;
     /**
      * Create a new job instance.
      */
-    public function __construct(User $user)
+    public function __construct( $data )
     {
-        //
-        // $this->queue='usertasks'; If you want to specify a different queue.
-        $this->user=$user;
+        $this->data = $data;
     }
 
     /**
@@ -31,8 +28,7 @@ class SendRegisteredEmailjob implements ShouldQueue
      */
     public function handle(): void
     {
-        
-        RegisteredUser::dispatch($this->user);
-        
+        // $this->data
+        SendContactUsEamilEvent::dispatch($this->data);
     }
 }

@@ -91,6 +91,12 @@ class ArticleController extends Controller
 
     }
 
+
+
+
+
+
+
     /**
      * Display the specified resource.
      */
@@ -98,10 +104,16 @@ class ArticleController extends Controller
     public function show(string $id)
     {
         
-        $articles = Article::find($id)->get();
+        $articles = Article::where('id', $id)->get();   /// Don't sue ->get() with find()               
         return ArticleResource::collection($articles);
 
     }
+
+
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.
