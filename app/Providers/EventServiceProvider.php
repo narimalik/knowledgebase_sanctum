@@ -9,7 +9,9 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 
 use App\Events\RegisteredUser;
+use App\Events\SendContactUsEamilEvent;
 use App\Listeners\DeleteArticleCategoriesListner;
+use App\Listeners\SendContactUsEamilListener;
 use App\Listeners\SendRegisteredEmail;
 
 class EventServiceProvider extends ServiceProvider
@@ -31,6 +33,11 @@ class EventServiceProvider extends ServiceProvider
         ArticleEvent::class =>[
             DeleteArticleCategoriesListner::class
         ],
+
+        SendContactUsEamilEvent::class =>[
+            SendContactUsEamilListener::class
+        ],
+
 
     ];
 

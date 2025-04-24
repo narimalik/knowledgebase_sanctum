@@ -32,7 +32,6 @@ class SendRegisteredEmail implements ShouldQueue
     {
         
         $user = $user->user;
-        
 
         Mail::to( $user)->send(new UserRegistered($user) );
 

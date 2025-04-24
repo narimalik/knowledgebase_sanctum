@@ -25,12 +25,7 @@ class CategoryController extends Controller
              
        $categories = Category::with(['articles','user'])->get();           
         return  CategoryResource::collection($categories);
-    //    return response(
-    //         [
-    //             'data'=> $categories,
-    //         ],
-    //         200
-    //     );
+
 
      }
 
@@ -88,8 +83,12 @@ class CategoryController extends Controller
     {
         
         //
-        # echo "I am in CategoryController:show()"; exit;
-
+        // return response([
+        //     "message"=> "In category show()",
+        //     ],
+        //     500
+        // );
+        // exit;
         $categories = Category::with(['articles'])->where("id",$id)->get();           
         return  CategoryResource::collection($categories);
 
