@@ -23,7 +23,7 @@ return [
 
     'allowed_origins' => [
         'http://localhost:8080',
-        'https://anwaarfazil.com/'
+        'https://anwaarfazil.com',
 
     ],
 
