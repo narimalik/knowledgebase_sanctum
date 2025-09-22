@@ -17,9 +17,9 @@ class ArticleResource extends JsonResource
         return [
             "id"=>$this->id,
             "article_title"=>$this->article_title,
-            "article_title"=>$this->article_title,
+            # "article_title"=>$this->article_title,
             "article_sub_title"=>$this->article_sub_title,
-         //"detail"=> $this->whenNotNull($this->detail),  # Only return value if its not null
+            //"detail"=> $this->whenNotNull($this->detail),  # Only return value if its not null
             "detail"=> $this->whenNotNull($this->detail),
             "categories"=> $this->categories, // To retur relationship data just call model relationship function.
            //"added_by"=>$this->added_by,

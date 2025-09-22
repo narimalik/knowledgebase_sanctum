@@ -22,6 +22,7 @@ class CategoryResource extends JsonResource
         "category_name" =>$this->category_name,
         "category_short_detail" =>$this->category_short_detail,
         "parent_category_id" =>$this->parent_category_id,
+        "category_icon_css" =>$this->category_icon_css,
         "articles" => SingleArticleResource::collection($this->articles),
         "status" =>$this->status,
        # "added_by" => $this->added_by,
